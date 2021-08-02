@@ -1,24 +1,39 @@
 class NegociacaoService {
-  obterNegociacoesDaSemana(cb) {
-    let xhr = new XMLHttpRequest()
+  obter(link, mensagemDeErro) {
+    return fetch(link)
+      .then((response) => response.json()
+      )
+      .then(result => result
+        .map(obj => 
+          new Negociacao(new Date(obj.data), obj.quantidade, obj.valor))
+      )
+      .catch(e => {
+        console.log(e)
+        throw mensagemDeErro
+      })
+  }
 
-    xhr.open('GET', 'negociacoes/semana')
+  obterNegociacoesDaSemana() {
+    return this.obter('negociacoes/semana', 'Não foi possível obter as negociações da semana')
+  }
 
-    xhr.onreadystatechange = () => {
-      if(xhr.readyState == 4) {
-        if(xhr.status == 200) {
-          cb(null, 
-          JSON.parse(xhr.responseText)
-            .map(obj => 
-              new Negociacao(new Date(obj.data), obj.quantidade, obj.valor))
-          )
-        } else {
-          console.log(xhr.responseText)
-          cb('Não foi possível obter as negociações da semana', null)
-        }
-      }
-    }
+  obterNegociacoesDaSemanaAnterior() {
+    return this.obter('negociacoes/anterior', 'Não foi possível obter as negociações da semana anterior')
+  }
 
-    xhr.send()
+  obterNegociacoesDaSemanaRetrasada() {
+    return this.obter('negociacoes/retrasada', 'Não foi possível obter as negociações da semana retrasada')
+  }
+
+  obterNegociacoes () {
+    return Promise.all([
+      this.obterNegociacoesDaSemana(),
+      this.obterNegociacoesDaSemanaAnterior(),
+      this.obterNegociacoesDaSemanaRetrasada(),
+    ])
+      .then(periodos => periodos.reduce((dados, periodo) => dados.concat(periodo), [])
+        .map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor))
+      )
+      .catch(e => { throw e })
   }
 }
