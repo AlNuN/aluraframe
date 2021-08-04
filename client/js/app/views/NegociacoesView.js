@@ -8,10 +8,26 @@ class NegociacoesView extends View{
       <table class="table table-hover table-bordered">
         <thead>
           <tr>
-            <th>DATA</th>
-            <th>QUANTIDADE</th>
-            <th>VALOR</th>
-            <th>VOLUME</th>
+            <th onclick="negociacaoController.ordena('data')">
+              <span>DATA</span>
+              <img src="./img/sort.svg" 
+                alt="setas para cima e para baixo indicando que você pode ordenar a tabela em ordem crescente ou decrescente">
+            </th>
+            <th onclick="negociacaoController.ordena('quantidade')">
+              <span>QUANTIDADE</span>
+              <img src="./img/sort.svg" 
+                alt="setas para cima e para baixo indicando que você pode ordenar a tabela em ordem crescente ou decrescente">
+            </th>
+            <th onclick="negociacaoController.ordena('valor')">
+              <span>VALOR</span>
+              <img src="./img/sort.svg" 
+                alt="setas para cima e para baixo indicando que você pode ordenar a tabela em ordem crescente ou decrescente">
+            </th>
+            <th onclick="negociacaoController.ordena('volume')">
+              <span>VOLUME</span>
+              <img src="./img/sort.svg" 
+                alt="setas para cima e para baixo indicando que você pode ordenar a tabela em ordem crescente ou decrescente">
+            </th>
           </tr>
         </thead>
 
